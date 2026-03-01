@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Break Buddy",
+  "version": "1.0.0",
+  "description": "Take better breaks with interval reminders, fullscreen nudges, snooze, and focus-lock overlays.",
+  "permissions": ["alarms", "notifications", "storage", "tabs", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icon-16.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  },
+  "action": {
+    "default_title": "Break Buddy",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon-16.png",
+      "48": "icon-48.png"
+    }
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

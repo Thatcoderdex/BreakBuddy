@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Break Buddy Settings</title>
+    <link rel="stylesheet" href="ui.css">
+  </head>
+  <body class="options-body">
+    <main class="panel options-panel">
+      <p class="eyebrow">Break Buddy Settings</p>
+      <h1>Customize your reminders</h1>
+
+      <div class="grid">
+        <label class="toggle-row"><span>Enable reminders</span><input id="enabled" type="checkbox"></label>
+        <label class="field">
+          <span>Reminder interval</span>
+          <select id="intervalMinutes">
+            <option value="20">20 min</option>
+            <option value="30">30 min</option>
+            <option value="45">45 min</option>
+            <option value="60">60 min</option>
+            <option value="90">90 min</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Reminder style</span>
+          <select id="reminderStyle">
+            <option value="soft">Soft</option>
+            <option value="normal">Normal</option>
+            <option value="aggressive">Aggressive</option>
+          </select>
+        </label>
+        <label class="toggle-row"><span>Full-screen stand up mode</span><input id="fullScreenMode" type="checkbox"></label>
+        <label class="toggle-row"><span>Sound cues for aggressive reminders</span><input id="soundEnabled" type="checkbox"></label>
+        <label class="toggle-row"><span>Focus lock mode</span><input id="focusLockMode" type="checkbox"></label>
+        <label class="field">
+          <span>Soft countdown</span>
+          <select id="focusLockSecondsSoft">
+            <option value="15">15 sec</option><option value="30">30 sec</option><option value="45">45 sec</option><option value="60">60 sec</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Normal countdown</span>
+          <select id="focusLockSecondsNormal">
+            <option value="15">15 sec</option><option value="30">30 sec</option><option value="45">45 sec</option><option value="60">60 sec</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Aggressive countdown</span>
+          <select id="focusLockSecondsAggressive">
+            <option value="15">15 sec</option><option value="30">30 sec</option><option value="45">45 sec</option><option value="60">60 sec</option>
+          </select>
+        </label>
+        <label class="toggle-row"><span>Use quiet hours</span><input id="quietHoursEnabled" type="checkbox"></label>
+        <div class="split-row">
+          <label class="field"><span>Quiet start</span><input id="quietStart" type="time"></label>
+          <label class="field"><span>Quiet end</span><input id="quietEnd" type="time"></label>
+        </div>
+      </div>
+
+      <label class="field">
+        <span>Reminder prompts, one per line</span>
+        <textarea id="tasks" rows="9"></textarea>
+      </label>
+
+      <div class="button-row">
+        <button id="save" class="primary-button" type="button">Save settings</button>
+        <button id="sendTest" class="ghost-button" type="button">Send test reminder</button>
+      </div>
+
+      <p id="saveStatus" class="save-status"></p>
+    </main>
+
+    <script src="options.js"></script>
+  </body>
+</html>
