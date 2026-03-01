@@ -50,6 +50,20 @@ Best GIF sequence:
 3. Click `Load unpacked`
 4. Select this folder
 
+## How To Test Locally
+
+1. Load or reload the unpacked extension in Chrome or Edge.
+2. Open a normal website tab such as `https://example.com`.
+3. Click the Break Buddy toolbar icon.
+4. Change the interval or toggle reminders to confirm the popup updates.
+5. Click `Send full-screen test`.
+6. Confirm the in-page overlay appears with the countdown ring, `Snooze 10 min`, and `Complete break`.
+7. Complete the break, then reopen the popup and verify the daily stats update.
+
+Notes:
+- Test on a normal webpage, not browser-internal pages like `chrome://extensions` or `edge://extensions`.
+- If you change code, reload the unpacked extension before testing again.
+
 ## Release Process
 
 Versioning rule:
