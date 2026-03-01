@@ -32,6 +32,25 @@ const DEFAULT_SETTINGS = {
 const ALARM_NAME = "break-buddy-reminder";
 const SNOOZE_ALARM_NAME = "break-buddy-snooze";
 
+function isInjectableTab(tab) {
+  if (!tab?.id || !tab.url) return false;
+  return /^(https?|file):/i.test(tab.url);
+}
+
+async function getTargetTabs(preferredTabId = null) {
+  if (preferredTabId) {
+    try {
+      const tab = await chrome.tabs.get(preferredTabId);
+      return isInjectableTab(tab) ? [tab] : [];
+    } catch (_error) {
+      return [];
+    }
+  }
+
+  const tabs = await chrome.tabs.query({});
+  return tabs.filter(isInjectableTab);
+}
+
 async function ensureContentScript(tabId) {
   try {
     await chrome.tabs.sendMessage(tabId, { type: "ping" });
@@ -143,7 +162,7 @@ async function sendReminder() {
     aggressive: settings.focusLockSecondsAggressive
   };
 
-  const tabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+  const tabs = await getTargetTabs();
   let overlayShown = false;
 
   for (const tab of tabs) {
@@ -191,9 +210,7 @@ async function sendTestReminder(preferredTabId = null) {
     nextPromptAt: new Date(Date.now() + settings.intervalMinutes * 60 * 1000).toISOString()
   });
 
-  const tabs = preferredTabId
-    ? [{ id: preferredTabId }]
-    : await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+  const tabs = await getTargetTabs(preferredTabId);
   let overlayShown = false;
 
   for (const tab of tabs) {
