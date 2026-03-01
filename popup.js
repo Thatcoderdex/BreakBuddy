@@ -99,11 +99,7 @@ async function saveQuickSettings() {
 document.querySelector("#enabled").addEventListener("change", saveQuickSettings);
 document.querySelector("#intervalMinutes").addEventListener("change", saveQuickSettings);
 document.querySelector("#sendTest").addEventListener("click", async () => {
-  const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  const settings = await chrome.runtime.sendMessage({
-    type: "send-test",
-    tabId: activeTab?.id ?? null
-  });
+  const settings = await chrome.runtime.sendMessage({ type: "send-test" });
   renderStats(settings);
 });
 document.querySelector("#openOptions").addEventListener("click", () => chrome.runtime.openOptionsPage());
