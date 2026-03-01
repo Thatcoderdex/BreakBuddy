@@ -1,0 +1,65 @@
+name: Release Extension
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Read version from manifest
+        id: version
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          manifest = json.loads(Path("manifest.json").read_text(encoding="utf-8"))
+          version = manifest["version"]
+          Path("release_version.txt").write_text(version, encoding="utf-8")
+          print(f"version={version}")
+          with open(Path.cwd() / Path(".github") / "version_output.txt", "w", encoding="utf-8") as f:
+              f.write(version)
+          PY
+          echo "version=$(cat .github/version_output.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Build extension zip
+        run: |
+          mkdir -p dist
+          zip -r "dist/BreakBuddy-${{ steps.version.outputs.version }}.zip" \
+            manifest.json \
+            background.js \
+            content.css \
+            content.js \
+            icon-16.png \
+            icon-48.png \
+            icon-128.png \
+            options.html \
+            options.js \
+            popup.html \
+            popup.js \
+            ui.css
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: break-buddy-extension-${{ steps.version.outputs.version }}
+          path: dist/BreakBuddy-${{ steps.version.outputs.version }}.zip
+
+      - name: Create GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/BreakBuddy-${{ steps.version.outputs.version }}.zip
+          generate_release_notes: true
